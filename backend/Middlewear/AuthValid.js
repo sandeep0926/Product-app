@@ -1,6 +1,8 @@
 import Joi from "joi";
 
 export const RegVali = (req,res,next) => {
+ console.log(req.body,"BODY");
+
  
     const Schema = Joi.object({
       name: Joi.string().min(3).max(50).required(),

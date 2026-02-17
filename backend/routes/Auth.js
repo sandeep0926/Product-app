@@ -7,3 +7,4 @@ export const Authrouter=express.Router();
 
 Authrouter.post('/login',LogVal,Login);
 Authrouter.post('/reg',RegVali,Reg);
+

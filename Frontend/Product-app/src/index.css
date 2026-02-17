@@ -66,3 +66,12 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+body{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+root{
+    width: 100%;
+}
