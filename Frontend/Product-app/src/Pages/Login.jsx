@@ -41,7 +41,7 @@ export default function Login() {
       style={{ backgroundImage: `url(${assets})` }}
     >
       <div className="max-w-[500px] border rounded-2xl   shadow-2xl flex-col items-center  flex justify-center space-x-2  text-black px-10 py-9">
-        <h1 className="text-black mb-10 py-4 font-bold text-blue-600 items-center text-center  border-b-2 ">
+        <h1 className="text-black mb-10 py-4 font-bold text-orange-400 text-4xl items-center text-center  border-b-2 ">
           LOGIN
         </h1>
         <form onSubmit={HandleSubmit}>
@@ -77,7 +77,7 @@ export default function Login() {
             </div>
           </div>
           <div>
-            <button className="text-white w-80" type="submit">
+            <button className="text-white bg-orange-400 h-12 w-[300px] rounded-2xl text-2xl " type="submit">
               LOGIN
             </button>
           </div>

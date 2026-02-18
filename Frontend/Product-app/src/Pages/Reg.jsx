@@ -39,7 +39,7 @@ export default function Reg() {
         style={{ backgroundImage: `url(${assets})` }}
       >
         <div className="max-w-[500px] border rounded-2xl   shadow-2xl flex-col items-center  flex justify-center space-x-2  text-black px-10 py-9 ">
-          <h1 className="text-black mb-10 py-4 font-bold text-blue-600 items-center text-center  border-b-2 ">
+          <h1 className="text-black mb-10 py-4 font-bold text-orange-400 items-center text-center text-4xl border-b-2 ">
             SIGNUP
           </h1>
           <form onSubmit={HandleSubmit}>
@@ -90,13 +90,13 @@ export default function Reg() {
               </div>
             </div>
             <div>
-              <button className="text-white w-80" type="submit">
+              <button className="text-white text-2xl bg-orange-400 h-12 rounded-2xl w-80" type="submit">
                 Register
               </button>
             </div>
           </form>
           <div className="mt-10 flex text-center justify-center items-center ">
-            <span className="font-extrabold font-stretch-125%">
+            <span className="font-extrabold  font-stretch-125%">
               Have An Account ? <Link to="/login">Login</Link>
             </span>
           </div>
