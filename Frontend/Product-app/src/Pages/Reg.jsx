@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import assets from "../assets/bgpage.jpg";
 import { ToastContainer } from "react-toastify";
@@ -27,7 +27,6 @@ export default function Reg() {
         HandleSuccess("Successfully Registered!");
         setTimeout(() => navigate("/login"), 2000);
       }
-      HandleSuccess("SucessFully Registed");
     } catch (error) {
       HandleError("Register Failed");
     }

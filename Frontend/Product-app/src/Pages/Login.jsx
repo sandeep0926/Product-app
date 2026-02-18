@@ -1,29 +1,41 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import assets from "../assets/bgpage.jpg";
 import { API } from "../Api/axios";
+import { ToastContainer } from "react-toastify";
+import { HandleError, HandleSuccess } from "../utils/util";
+
 
 export default function Login() {
   const [login, setLogin] = useState({
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
 
-  const HandleChange = (e) => {
+  const HandleSubmit = async (e) => {
+    e.preventDefault();
 
-  };
-  const HandleSubmit = async() => {
-try {
-  
-const res=await API.post("api/log")
-
-} catch (error) {
-  
-}
-
+    const { email, password } = login;
+    if (!email || !password) {
+      return HandleError("All Filed is Required ");
+    }
+    try {
+      const res = await API.post("api/login", login);
+      console.log(res,"hello");
+      
+      localStorage.setItem("token",res.data.JwtTok)
+      if (res.status === 201) {
+        HandleSuccess("Login Successfully !");
+        setTimeout(() => navigate("/productpage"), 2000);
+      }
+    } catch (error) {
+      HandleError("Login Failed");
+    }
   };
 
   return (
+    <div>
     <div
       className="bg-cover w-full flex items-center justify-center h-[100vh]"
       style={{ backgroundImage: `url(${assets})` }}
@@ -39,9 +51,13 @@ const res=await API.post("api/log")
                 Email :
               </label>
               <input
-                onChange={HandleChange}
+                onChange={(e) => {
+                  setLogin({ ...login, email: e.target.value });
+                }}
                 className="border rounded h-13 p-2 w-70"
                 type="email"
+                autoFocus
+                value={login.email}
                 placeholder="Enter your email"
               />
             </div>
@@ -50,9 +66,12 @@ const res=await API.post("api/log")
                 Password :
               </label>
               <input
-                onChange={HandleChange}
+                onChange={(e) => {
+                  setLogin({ ...login, password: e.target.value });
+                }}
                 className="border p-2 rounded h-13 w-70"
                 type="password"
+                value={login.password}
                 placeholder="Enter your Password"
               />
             </div>
@@ -69,6 +88,8 @@ const res=await API.post("api/log")
           </div>
         </form>
       </div>
+    </div>
+    <ToastContainer/>
     </div>
   );
 }
