@@ -23,7 +23,6 @@ export default function Login() {
     try {
       const res = await API.post("api/login", login);
 
-      // Store token and user info
       localStorage.setItem("token", res.data.JwtTok);
       localStorage.setItem("userName", res.data.name);
       localStorage.setItem("userEmail", res.data.email);
@@ -32,7 +31,6 @@ export default function Login() {
       if (res.status === 201) {
         HandleSuccess("Login Successfully !");
 
-        // Redirect based on role
         if (res.data.role === "admin") {
           setTimeout(() => navigate("/admin"), 2000);
         } else {
