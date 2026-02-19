@@ -43,8 +43,8 @@ export default function ProductPage({ filters: exFil }) {
     fetchData();
   }, [fetchData]);
 
-  const handleFilterChange = (newFil) => {
-    setFilters(newFil);
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
   };
 
   const handleLogout = () => {
