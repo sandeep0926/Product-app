@@ -6,7 +6,6 @@ import ProductPage from "./Pages/ProductPage.jsx";
 import Reg from "./Pages/Reg.jsx";
 import { Navigate, Route, Routes } from "react-router-dom";
 
-// Protected Route component for admin pages
 function AdminRoute({ children }) {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("userRole");
@@ -20,7 +19,6 @@ function AdminRoute({ children }) {
   return children;
 }
 
-// Protected Route component for authenticated users
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("token");
   if (!token) {

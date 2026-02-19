@@ -8,7 +8,6 @@ export default function AdminPanel() {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
 
-  // Protect admin route
   useEffect(() => {
     const role = localStorage.getItem("userRole");
     if (role !== "admin") {
@@ -52,7 +51,6 @@ export default function AdminPanel() {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
       <div className="w-64 bg-white border-r p-6 flex flex-col">
         <h2 className="text-xl font-bold text-orange-400 mb-2">Admin Panel</h2>
         <p className="text-sm text-gray-500 mb-6">Welcome, {userName}</p>
@@ -81,7 +79,6 @@ export default function AdminPanel() {
         </button>
       </div>
 
-      {/* Main Content */}
       <div className="flex-1 p-8">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold">All Products ({products.length})</h1>

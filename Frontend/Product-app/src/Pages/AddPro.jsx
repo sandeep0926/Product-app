@@ -18,10 +18,9 @@ export default function AddProduct() {
     des: "",
   });
 
-  const [images, setImages] = useState([]);
-  const [imagePreviews, setImagePreviews] = useState([]);
+  const [image, setImages] = useState([]);
+  const [imgPre, setImgPre] = useState([]);
 
-  // Protect admin route
   useEffect(() => {
     const role = localStorage.getItem("userRole");
     if (role !== "admin") {
@@ -33,9 +32,8 @@ export default function AddProduct() {
     const files = Array.from(e.target.files);
     setImages(files);
 
-    // Create preview URLs
-    const previews = files.map((file) => URL.createObjectURL(file));
-    setImagePreviews(previews);
+    const preview = files.map((file) => URL.createObjectURL(file));
+    setImgPre(preview);
   };
 
   const handleSubmit = async (e) => {
@@ -54,8 +52,7 @@ export default function AddProduct() {
       formData.append("dimension", form.dimension);
       formData.append("des", form.des);
 
-      // Append each image file
-      images.forEach((file) => {
+      image.forEach((file) => {
         formData.append("images", file);
       });
 
@@ -119,9 +116,9 @@ export default function AddProduct() {
               onChange={handleImageChange}
               className="w-full border p-3 rounded bg-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-orange-400 file:text-white file:cursor-pointer"
             />
-            {imagePreviews.length > 0 && (
+            {imgPre.length > 0 && (
               <div className="flex gap-3 mt-3 flex-wrap">
-                {imagePreviews.map((preview, index) => (
+                {imgPre.map((preview, index) => (
                   <div key={index} className="relative">
                     <img
                       src={preview}
@@ -136,7 +133,7 @@ export default function AddProduct() {
 
           <div>
             <label className="block font-semibold mb-1">
-              Colors (comma separated) :
+              Colors :
             </label>
             <input
               placeholder="e.g. red, blue, green"
@@ -148,7 +145,7 @@ export default function AddProduct() {
 
           <div>
             <label className="block font-semibold mb-1">
-              Size (comma separated) :
+              Size :
             </label>
             <input
               placeholder="e.g. S, M, L, XL"
@@ -160,7 +157,7 @@ export default function AddProduct() {
 
           <div>
             <label className="block font-semibold mb-1">
-              Dimension (comma separated) :
+              Dimension :
             </label>
             <input
               placeholder="e.g. 10, 20, 30"

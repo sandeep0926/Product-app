@@ -14,14 +14,12 @@ export default function ProductPage({ filters: exFil }) {
     dimensions: [],
   });
 
-  // Get real user info from localStorage
   const userEmail = localStorage.getItem("userEmail") || "Guest";
   const userRole = localStorage.getItem("userRole") || "user";
   const userName = localStorage.getItem("userName") || "User";
 
   const navigate = useNavigate();
 
-  // Check if user is logged in
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -29,7 +27,6 @@ export default function ProductPage({ filters: exFil }) {
     }
   }, [navigate]);
 
-  // ✅ safer fetch
   const fetchData = useCallback(async () => {
     try {
       const res = await API.get("/api1/get-prod", {
@@ -42,13 +39,12 @@ export default function ProductPage({ filters: exFil }) {
     }
   }, [exFil]);
 
-  // ✅ correct dependency
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  const handleFilterChange = (newFilters) => {
-    setFilters(newFilters);
+  const handleFilterChange = (newFil) => {
+    setFilters(newFil);
   };
 
   const handleLogout = () => {
@@ -59,22 +55,19 @@ export default function ProductPage({ filters: exFil }) {
     navigate("/login");
   };
 
-  // ✅ FIXED FILTER LOGIC
   const filProd = useMemo(() => {
     return products.filter((product) => {
-      // color array match
       const colMatch =
         filters.colors.length === 0 ||
         filters.colors.some((c) =>
           product.color?.includes(c)
         );
 
-      // size match
+      
       const sizeMatch =
         filters.sizes.length === 0 ||
         filters.sizes.some((s) => product.size?.includes(s));
 
-      // dimension match
       const dimMatch =
         filters.dimensions.length === 0 ||
         filters.dimensions.some((d) => product.dimension?.includes(d));
@@ -88,7 +81,6 @@ export default function ProductPage({ filters: exFil }) {
       <SidebarFilter onFilterChange={handleFilterChange} />
 
       <div className="flex-1">
-        {/* HEADER */}
         <div className="bg-white border-b shadow-sm">
           <div className="w-full px-8">
             <div className="flex items-center justify-between py-4">
@@ -106,7 +98,6 @@ export default function ProductPage({ filters: exFil }) {
                   Welcome, {userName}
                 </span>
 
-                {/* Only show Admin Panel button if user role is admin */}
                 {userRole === "admin" && (
                   <button
                     onClick={() => navigate("/admin")}
@@ -127,7 +118,6 @@ export default function ProductPage({ filters: exFil }) {
           </div>
         </div>
 
-        {/* CONTENT */}
         <div className="w-full px-8 py-8">
           <div className="flex gap-2 mb-6">
             <button

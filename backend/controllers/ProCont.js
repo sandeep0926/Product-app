@@ -2,22 +2,21 @@ import { Products } from "../models/Product.js";
 
 export const CreFun = async (req, res) => {
   try {
-    // Handle image files from multer
     const images = req.files
       ? req.files.map((file) => `/uploads/${file.filename}`)
       : [];
 
-    const productData = {
+    const proData = {
       title: req.body.title,
       des: req.body.des,
       price: req.body.price,
       image: images,
-      color: req.body.color ? req.body.color.split(",").map((c) => c.trim()) : [],
-      dimension: req.body.dimension ? req.body.dimension.split(",").map((d) => d.trim()) : [],
-      size: req.body.size ? req.body.size.split(",").map((s) => s.trim()) : [],
+      color: req.body.color,
+      dimension: req.body.dimension,
+      size: req.body.size ,
     };
 
-    const pro = await Products.create(productData);
+    const pro = await Products.create(proData);
     res.status(201).json(pro);
   } catch (error) {
     console.log(error);

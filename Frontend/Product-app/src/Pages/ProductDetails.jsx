@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { API } from "../Api/axios.js";
 import DOMPurify from "dompurify";
 
-const BASE_URL = "http://localhost:8080";
+const URL = "http://localhost:8080";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -11,7 +11,7 @@ export default function ProductDetails() {
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeImage, setActiveImage] = useState("");
+  const [actImg, setActImg] = useState("");
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -21,9 +21,8 @@ export default function ProductDetails() {
         const res = await API.get(`/api1/get/${id}`);
 
         setProduct(res.data);
-        // Set the first image as active
         if (res.data?.image?.[0]) {
-          setActiveImage(`${BASE_URL}${res.data.image[0]}`);
+          setActImg(`${URL}${res.data.image[0]}`);
         }
       } catch (err) {
         console.error("Error fetching product:", err);
@@ -69,9 +68,9 @@ export default function ProductDetails() {
       <div className="bg-white rounded-xl shadow-md p-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div>
           <div className="w-full h-[450px] rounded-lg overflow-hidden border">
-            {activeImage ? (
+            {actImg ? (
               <img
-                src={activeImage}
+                src={actImg}
                 alt={product.title}
                 className="w-full h-full object-cover"
               />
@@ -85,17 +84,18 @@ export default function ProductDetails() {
           {product.image?.length > 1 && (
             <div className="flex gap-3 mt-4 flex-wrap">
               {product.image.map((img, i) => {
-                const fullUrl = `${BASE_URL}${img}`;
+                const fullUrl = `${URL}${img}`;
                 return (
                   <img
                     key={i}
                     src={fullUrl}
-                    alt={`thumb-${i}`}
-                    onClick={() => setActiveImage(fullUrl)}
-                    className={`w-20 h-20 object-cover rounded-lg border cursor-pointer ${activeImage === fullUrl
+                    alt={`thumb`}
+                    onClick={() => setActImg(fullUrl)}
+                    className={`w-20 h-20 object-cover rounded-lg border cursor-pointer ${
+                      actImg === fullUrl
                         ? "border-orange-400 ring-2 ring-orange-200"
                         : "border-gray-200"
-                      }`}
+                    }`}
                   />
                 );
               })}
@@ -112,7 +112,7 @@ export default function ProductDetails() {
             <div
               className="text-gray-600 mb-6 prose max-w-none"
               dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(product.des || "")
+                __html: DOMPurify.sanitize(product.des || ""),
               }}
             />
 
@@ -136,16 +136,16 @@ export default function ProductDetails() {
               </div>
             )}
 
-
             {product.size?.length > 0 && (
               <p className="mb-2">
-                <span className="font-semibold">Size:</span> {product.size.join(", ")}
+                <span className="font-semibold">Size:</span>{" "}
+                {product.size.join(", ")}
               </p>
             )}
 
             {product.dimension?.length > 0 && (
               <p className="mb-4">
-                <span className="font-semibold">Dimension:</span>{" "}
+                <span className="font-semibold">Dimension:</span>
                 {product.dimension.join(", ")}
               </p>
             )}
