@@ -7,7 +7,8 @@ export const Autherize = (req, res, next) => {
   }
 
   try {
-    const decode = jwt.verify(Auth, process.env.JWT_SEC);
+    const token = Auth.startsWith("Bearer ") ? Auth.split(" ")[1] : Auth;
+    const decode = jwt.verify(token, process.env.JWT_SEC);
     req.user = decode;
     next();
   } catch (error) {

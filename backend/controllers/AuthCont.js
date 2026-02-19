@@ -46,11 +46,17 @@ export const Login = async (req, res) => {
         .json({ message: "PASSWORD IS WRONG OR NOT MATCHED...." });
     }
     const JwtTok = jwt.sign(
-      { email: user.email, _id: user._id },
+      { email: user.email, _id: user._id, role: user.role },
       process.env.JWT_SEC,
       { expiresIn: "24h" },
     );
-    res.status(201).json({ message: "LOGIN SUCCESSFULLY...", JwtTok, email });
+    res.status(201).json({
+      message: "LOGIN SUCCESSFULLY...",
+      JwtTok,
+      email,
+      name: user.name,
+      role: user.role,
+    });
   } catch (error) {
     res.status(500).json({ message: "ERROR NOT LOGIN..." });
   }

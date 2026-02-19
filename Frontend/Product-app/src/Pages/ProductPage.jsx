@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback } from "react"; 
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { API } from "../Api/axios.js";
 import ProductCard from "../Components/ProductCard.jsx";
 import SidebarFilter from "../Components/SideBar.jsx";
@@ -7,29 +7,42 @@ import { useNavigate } from "react-router-dom";
 export default function ProductPage({ filters: exFil }) {
   const [products, setProducts] = useState([]);
   const [view, setView] = useState("grid");
-  
-  
+
   const [filters, setFilters] = useState({
     colors: [],
     sizes: [],
     dimensions: [],
   });
 
-  const user = { email: "user@example.com", role: "admin" }; 
+  // Get real user info from localStorage
+  const userEmail = localStorage.getItem("userEmail") || "Guest";
+  const userRole = localStorage.getItem("userRole") || "user";
+  const userName = localStorage.getItem("userName") || "User";
+
   const navigate = useNavigate();
 
-  
+  // Check if user is logged in
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  // ✅ safer fetch
   const fetchData = useCallback(async () => {
     try {
       const res = await API.get("/api1/get-prod", {
         params: exFil,
       });
+
       setProducts(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   }, [exFil]);
 
+  // ✅ correct dependency
   useEffect(() => {
     fetchData();
   }, [fetchData]);
@@ -40,57 +53,72 @@ export default function ProductPage({ filters: exFil }) {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    console.log("Logging out...");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userRole");
     navigate("/login");
   };
 
+  // ✅ FIXED FILTER LOGIC
   const filProd = useMemo(() => {
-    if (!products) return [];
-
     return products.filter((product) => {
-      const col = (filters?.colors?.length || 0) === 0 || 
-                         filters.colors.includes(product.color);
+      // color array match
+      const colMatch =
+        filters.colors.length === 0 ||
+        filters.colors.some((c) =>
+          product.color?.includes(c)
+        );
 
-      const size = (filters?.sizes?.length || 0) === 0 || 
-                        filters.sizes.includes(product.size);
+      // size match
+      const sizeMatch =
+        filters.sizes.length === 0 ||
+        filters.sizes.some((s) => product.size?.includes(s));
 
-      const dim = (filters?.dimensions?.length || 0) === 0 || 
-                             filters.dimensions.includes(product.dimensions);
+      // dimension match
+      const dimMatch =
+        filters.dimensions.length === 0 ||
+        filters.dimensions.some((d) => product.dimension?.includes(d));
 
-      return col && size && dim;
+      return colMatch && sizeMatch && dimMatch;
     });
   }, [products, filters]);
 
   return (
     <div className="flex min-h-screen bg-gray-50">
       <SidebarFilter onFilterChange={handleFilterChange} />
-      
+
       <div className="flex-1">
+        {/* HEADER */}
         <div className="bg-white border-b shadow-sm">
           <div className="w-full px-8">
             <div className="flex items-center justify-between py-4">
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Products</h1>
+                <h1 className="text-2xl font-bold text-gray-900">
+                  Products
+                </h1>
                 <p className="text-sm text-gray-600">
                   Showing {filProd.length} of {products.length} products
                 </p>
               </div>
-              
+
               <div className="flex items-center gap-4">
                 <span className="text-sm text-gray-600">
-                  Welcome, {user?.email}
+                  Welcome, {userName}
                 </span>
-                {user?.role === "admin" && (
+
+                {/* Only show Admin Panel button if user role is admin */}
+                {userRole === "admin" && (
                   <button
                     onClick={() => navigate("/admin")}
-                    className="px-4 py-2 text-white transition bg-orange-400 rounded-lg hover:bg-orange-500"
+                    className="px-4 py-2 text-white bg-orange-400 rounded-lg hover:bg-orange-500 transition"
                   >
                     Admin Panel
                   </button>
                 )}
+
                 <button
                   onClick={handleLogout}
-                  className="px-4 py-2 text-white transition bg-red-600 rounded-lg hover:bg-red-700"
+                  className="px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700 transition"
                 >
                   Logout
                 </button>
@@ -98,26 +126,26 @@ export default function ProductPage({ filters: exFil }) {
             </div>
           </div>
         </div>
-       
+
+        {/* CONTENT */}
         <div className="w-full px-8 py-8">
           <div className="flex gap-2 mb-6">
             <button
               onClick={() => setView("grid")}
-              className={`px-4 py-2 rounded-lg font-medium transition ${
-                view === "grid"
+              className={`px-4 py-2 rounded-lg font-medium transition ${view === "grid"
                   ? "bg-orange-400 text-white shadow-md"
-                  : "bg-white text-gray-700 hover:bg-gray-100 border"
-              }`}
+                  : "bg-white text-gray-700 border hover:bg-gray-100"
+                }`}
             >
               Grid View
             </button>
+
             <button
               onClick={() => setView("list")}
-              className={`px-4 py-2 rounded-lg font-medium transition ${
-                view === "list"
+              className={`px-4 py-2 rounded-lg font-medium transition ${view === "list"
                   ? "bg-orange-400 text-white shadow-md"
-                  : "bg-white text-gray-700 hover:bg-gray-100 border"
-              }`}
+                  : "bg-white text-gray-700 border hover:bg-gray-100"
+                }`}
             >
               List View
             </button>
@@ -126,7 +154,7 @@ export default function ProductPage({ filters: exFil }) {
           {filProd.length === 0 ? (
             <div className="py-12 text-center bg-white rounded-xl border border-dashed border-gray-300">
               <p className="text-lg text-gray-500">
-                No products found 
+                No products found
               </p>
             </div>
           ) : (
@@ -138,7 +166,11 @@ export default function ProductPage({ filters: exFil }) {
               }
             >
               {filProd.map((p) => (
-                <ProductCard key={p._id} product={p} list={view === "list"} />
+                <ProductCard
+                  key={p._id}
+                  product={p}
+                  list={view === "list"}
+                />
               ))}
             </div>
           )}

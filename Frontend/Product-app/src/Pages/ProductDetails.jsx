@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { API } from "../Api/axios.js";
+import DOMPurify from "dompurify";
+
+const BASE_URL = "http://localhost:8080";
 
 export default function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState("");
 
@@ -18,7 +21,10 @@ export default function ProductDetails() {
         const res = await API.get(`/api1/get/${id}`);
 
         setProduct(res.data);
-        setActiveImage(res.data?.image?.[0] || "");
+        // Set the first image as active
+        if (res.data?.image?.[0]) {
+          setActiveImage(`${BASE_URL}${res.data.image[0]}`);
+        }
       } catch (err) {
         console.error("Error fetching product:", err);
       } finally {
@@ -55,7 +61,7 @@ export default function ProductDetails() {
     <div className="min-h-screen bg-gray-50 px-6 py-8">
       <button
         onClick={() => navigate(-1)}
-        className="mb-6 px-4 py-2 bg-orange-400 border rounded-lg text-white"
+        className="mb-6 px-4 py-2 bg-orange-400 text-white rounded-lg"
       >
         ← Back
       </button>
@@ -63,41 +69,52 @@ export default function ProductDetails() {
       <div className="bg-white rounded-xl shadow-md p-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div>
           <div className="w-full h-[450px] rounded-lg overflow-hidden border">
-            <img
-              src={activeImage}
-              alt={product.title}
-              className="w-full h-full object-cover"
-            />
+            {activeImage ? (
+              <img
+                src={activeImage}
+                alt={product.title}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-xl">
+                No Image Available
+              </div>
+            )}
           </div>
 
-          {product.images?.length > 1 && (
+          {product.image?.length > 1 && (
             <div className="flex gap-3 mt-4 flex-wrap">
-              {product.image.map((img, i) => (
-                <img
-                  key={i}
-                  src={img}
-                  alt={`thumb-${i}`}
-                  onClick={() => setActiveImage(img)}
-                  className={`w-20 h-20 object-cover rounded-lg border cursor-pointer ${
-                    activeImage === img
-                      ? "border-orange-400 ring-2 ring-orange-200"
-                      : "border-gray-200"
-                  }`}
-                />
-              ))}
+              {product.image.map((img, i) => {
+                const fullUrl = `${BASE_URL}${img}`;
+                return (
+                  <img
+                    key={i}
+                    src={fullUrl}
+                    alt={`thumb-${i}`}
+                    onClick={() => setActiveImage(fullUrl)}
+                    className={`w-20 h-20 object-cover rounded-lg border cursor-pointer ${activeImage === fullUrl
+                        ? "border-orange-400 ring-2 ring-orange-200"
+                        : "border-gray-200"
+                      }`}
+                  />
+                );
+              })}
             </div>
           )}
         </div>
 
         <div className="flex flex-col justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-3">
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">
               {product.title}
             </h1>
 
-            <p className="text-gray-600 leading-relaxed mb-6">
-              {product.des}
-            </p>
+            <div
+              className="text-gray-600 mb-6 prose max-w-none"
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(product.des || "")
+              }}
+            />
 
             <div className="text-3xl font-bold text-orange-500 mb-6">
               ${product.price}
@@ -119,21 +136,20 @@ export default function ProductDetails() {
               </div>
             )}
 
-            {product.size && (
+
+            {product.size?.length > 0 && (
               <p className="mb-2">
-                <span className="font-semibold">Size:</span> {product.size}
+                <span className="font-semibold">Size:</span> {product.size.join(", ")}
               </p>
             )}
 
-            {product.dimension && (
+            {product.dimension?.length > 0 && (
               <p className="mb-4">
                 <span className="font-semibold">Dimension:</span>{" "}
-                {product.dimension}"
+                {product.dimension.join(", ")}
               </p>
             )}
           </div>
-
-          
         </div>
       </div>
     </div>
