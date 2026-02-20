@@ -84,9 +84,9 @@ export default function AdminPanel() {
           <h1 className="text-2xl font-bold">All Products ({products.length})</h1>
         </div>
 
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b">
+        <div className="bg-white border-white rounded-lg shadow overflow-hidden">
+          <table className="w-full border-grey-100">
+            <thead className="bg-gray-50 border-gray-200 border-b">
               <tr>
                 <th className="p-3 text-left">Image</th>
                 <th className="p-3 text-left">Title</th>
@@ -100,7 +100,7 @@ export default function AdminPanel() {
 
             <tbody>
               {products.map((p) => (
-                <tr key={p._id} className="border-b hover:bg-gray-50 transition">
+                <tr key={p._id} className="border-b border-gray-300 hover:bg-gray-50 transition">
                   <td className="p-3">
                     {p.image && p.image.length > 0 ? (
                       <img

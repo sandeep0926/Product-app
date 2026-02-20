@@ -142,6 +142,7 @@ export default function AddProduct() {
           <div>
             <label className="block font-semibold mb-1">Title :</label>
             <input
+            type="title"
               placeholder="Title"
               className="w-full border p-3 rounded"
               value={form.title}
@@ -184,29 +185,34 @@ export default function AddProduct() {
             )}
           </div>
 
-          <div>
+          <div className="flex gap-5">
             <label className="block font-semibold mb-1">Colors :</label>
             <input
+            type="color"
               placeholder="e.g. red, blue, green"
-              className="w-full border p-3 rounded"
+              className=" border p-3 rounded"
               value={form.color}
               onChange={(e) => setForm({ ...form, color: e.target.value })}
             />
-          </div>
-
-          <div>
-            <label className="block font-semibold mb-1">Size :</label>
+            <div className="flex gap-2 ml-auto">
+               <label className="block font-semibold mb-1">Size :</label>
             <input
+            type="text"
               placeholder="e.g. S, M, L, XL"
-              className="w-full border p-3 rounded"
+              className=" border p-3 rounded"
               value={form.size}
               onChange={(e) => setForm({ ...form, size: e.target.value })}
             />
+            </div>
+              
           </div>
+
+          
 
           <div>
             <label className="block font-semibold mb-1">Dimension :</label>
             <input
+            type="number"
               placeholder="e.g. 10, 20, 30"
               className="w-full border p-3 rounded"
               value={form.dimension}

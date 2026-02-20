@@ -72,7 +72,7 @@ export default function ProductDetails() {
               <img
                 src={actImg}
                 alt={product.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full "
               />
             ) : (
               <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-xl">

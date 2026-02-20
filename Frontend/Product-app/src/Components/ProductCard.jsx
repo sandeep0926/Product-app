@@ -44,19 +44,33 @@ export default function ProductCard({ product, list }) {
         </div>
 
         <div>
-          <div className="flex items-center justify-between mt-auto">
-            <span className="text-xl font-bold text-orange-500">
+          <div className="flex items-center font-bold justify-between mt-auto">Price :
+            <span className=" font-bold text-orange-500">
               ${product.price}
+            </span>
+
+          </div>
+          <div className="flex items-center font-bold justify-between mt-auto">
+             Size :
+            <span className=" font-medium">
+             {product.size}
+            </span>
+
+          </div>
+          <div className="flex items-center  font-bold justify-between mt-auto">
+             Dimension :
+            <span className=" font-medium">
+             {product.dimension}
             </span>
 
           </div>
 
           {product.color && product.color.length > 0 && (
-            <div className="mt-3 flex gap-2">
+            <div className="mt-3 font-bold flex gap-2">Color :
               {product.color.map((color) => (
                 <div
                   key={color}
-                  className="w-5 h-5 rounded-full border border-gray-300 shadow-sm"
+                  className="w-5 h-5 rounded-full border ml-auto border-gray-300 shadow-sm"
                   style={{ backgroundColor: color }}
                   title={color}
                 />

@@ -11,16 +11,34 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const [err,setErr]=useState({});
+
   const navigate = useNavigate();
+
+  const Validate=()=>{
+    let newErr={};
+    if(!login.email)
+    {
+      newErr.email="Email is Required";
+    }
+    if(!login.password)
+    {
+      newErr.password="Pawword is Required";
+    }
+    else if(login.password.length <6)
+    {
+newErr.password="Passwoed max be 6 length";
+    }
+    return newErr;
+  }
 
   const HandleSubmit = async (e) => {
     e.preventDefault();
-
-    const { email, password } = login;
-    if (!email || !password) {
-      return HandleError("All Filed is Required ");
-    }
-    try {
+const valErr=Validate();
+setErr(valErr);
+if(Object.keys(valErr))
+{
+ try {
       const res = await API.post("api/login", login);
 
       localStorage.setItem("token", res.data.JwtTok);
@@ -40,6 +58,12 @@ export default function Login() {
     } catch (error) {
       HandleError("Login Failed");
     }
+}
+    // const { email, password } = login;
+    // if (!email || !password) {
+    //   return HandleError("All Filed is Required ");
+    // }
+   
   };
 
   return (
@@ -48,7 +72,7 @@ export default function Login() {
         className="bg-cover w-full flex items-center justify-center h-[100vh]"
         style={{ backgroundImage: `url(${assets})` }}
       >
-        <div className="max-w-[500px] border rounded-2xl   shadow-2xl flex-col items-center  flex justify-center space-x-2  text-black px-10 py-9">
+        <div className="w-[450px] border rounded-2xl border-white  bg-white shadow-2xl flex-col items-center  flex justify-center space-x-2  text-black px-10 py-9">
           <h1 className="text-black mb-10 py-4 font-bold text-orange-400 text-4xl items-center text-center  border-b-2 ">
             LOGIN
           </h1>
@@ -62,12 +86,14 @@ export default function Login() {
                   onChange={(e) => {
                     setLogin({ ...login, email: e.target.value });
                   }}
-                  className="border rounded h-13 p-2 w-70"
+                  className="border w-full rounded h-13 p-2 w-70"
                   type="email"
                   autoFocus
                   value={login.email}
                   placeholder="Enter your email"
                 />
+                {err.email && <p style={{color:"red"}}>
+                  {err.email}</p>}
               </div>
               <div className="mb-9 flex flex-col">
                 <label className=" font-stretch-120% text-gray-800 py-3 w-35 font-bold">
@@ -77,15 +103,17 @@ export default function Login() {
                   onChange={(e) => {
                     setLogin({ ...login, password: e.target.value });
                   }}
-                  className="border p-2 rounded h-13 w-70"
+                  className="border w-full p-2 rounded h-13 w-70"
                   type="password"
                   value={login.password}
                   placeholder="Enter your Password"
                 />
+                {err.password && <p style={{color:"red"}}>
+                  {err.password}</p>}
               </div>
             </div>
             <div>
-              <button className="text-white bg-orange-400 h-12 w-[300px] rounded-2xl text-2xl " type="submit">
+              <button className="text-white bg-orange-400 w-full h-12 w-[300px] rounded-2xl text-2xl " type="submit">
                 LOGIN
               </button>
             </div>

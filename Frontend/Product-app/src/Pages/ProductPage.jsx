@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 export default function ProductPage({ filters: exFil }) {
   const [products, setProducts] = useState([]);
   const [view, setView] = useState("grid");
+  const [color,setColor]=useState("#000000");
 
   const [filters, setFilters] = useState({
     colors: [],
@@ -95,7 +96,8 @@ export default function ProductPage({ filters: exFil }) {
 
               <div className="flex items-center gap-4">
                 <span className="text-sm text-gray-600">
-                  Welcome, {userName}
+                  Welcome, {userName} 
+                  
                 </span>
 
                 {userRole === "admin" && (

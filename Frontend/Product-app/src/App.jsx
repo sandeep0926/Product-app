@@ -1,4 +1,4 @@
-import AddPro from "./Pages/AddPro.jsx";
+// AddPro is now rendered inline within Adminpage.jsx
 import EditPro from "./Pages/EditPro.jsx";
 import Admin from "./Pages/Adminpage.jsx";
 import Login from "./Pages/Login.jsx";
@@ -55,14 +55,6 @@ export default function App() {
         element={
           <AdminRoute>
             <Admin />
-          </AdminRoute>
-        }
-      />
-      <Route
-        path="/admin/add-pro"
-        element={
-          <AdminRoute>
-            <AddPro />
           </AdminRoute>
         }
       />
