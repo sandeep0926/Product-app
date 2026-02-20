@@ -131,12 +131,20 @@ export default function AdminPanel() {
                   <td className="p-3">{p.size?.join(", ")}</td>
                   <td className="p-3">{p.dimension?.join(", ")}</td>
                   <td className="p-3">
-                    <button
-                      onClick={() => handleDelete(p._id)}
-                      className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition text-sm"
-                    >
-                      Delete
-                    </button>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => navigate(`/admin/edit-pro/${p._id}`)}
+                        className="px-3 py-1 bg-orange-400 text-white rounded transition text-sm"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(p._id)}
+                        className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition text-sm"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

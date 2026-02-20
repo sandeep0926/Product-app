@@ -4,6 +4,9 @@ import JoditEditor from "jodit-react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { HandleSuccess, HandleError } from "../utils/util";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 
 export default function AddProduct() {
   const navigate = useNavigate();
@@ -21,12 +24,34 @@ export default function AddProduct() {
   const [image, setImages] = useState([]);
   const [imgPre, setImgPre] = useState([]);
 
+
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
+
   useEffect(() => {
     const role = localStorage.getItem("userRole");
     if (role !== "admin") {
       navigate("/productpage");
     }
   }, [navigate]);
+
+  useEffect(() => {
+    if (transcript) {
+      setForm((prev) => ({
+        ...prev,
+        des: prev.des ? prev.des + " " + transcript : transcript,
+      }));
+      resetTranscript();
+    }
+  }, [transcript, resetTranscript]);
+
+  if (!browserSupportsSpeechRecognition) {
+    return <span>Browser doesn't support speech recognition.</span>;
+  }
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
@@ -70,6 +95,20 @@ export default function AddProduct() {
     }
   };
 
+  const startVoice = () => {
+    resetTranscript();
+    SpeechRecognition.startListening({
+      continuous: true,
+      language: "en-IN",
+    });
+  };
+
+  const stopVoice = () => {
+    SpeechRecognition.stopListening();
+  };
+
+
+
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="bg-white max-w-3xl mx-auto p-6 rounded-xl shadow">
@@ -82,6 +121,22 @@ export default function AddProduct() {
             ← Back to Admin
           </button>
         </div>
+
+        {listening && (
+          <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center gap-2">
+            <span className="animate-pulse text-green-600">🟢</span>
+            <span className="text-sm text-green-700">
+              Listening for <strong>Description</strong> field...
+            </span>
+            <button
+              type="button"
+              onClick={stopVoice}
+              className="ml-auto px-3 py-1 bg-red-500 text-white rounded text-sm"
+            >
+              Stop
+            </button>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -106,9 +161,7 @@ export default function AddProduct() {
           </div>
 
           <div>
-            <label className="block font-semibold mb-1">
-              Product Images :
-            </label>
+            <label className="block font-semibold mb-1">Product Images :</label>
             <input
               type="file"
               accept="image/*"
@@ -132,9 +185,7 @@ export default function AddProduct() {
           </div>
 
           <div>
-            <label className="block font-semibold mb-1">
-              Colors :
-            </label>
+            <label className="block font-semibold mb-1">Colors :</label>
             <input
               placeholder="e.g. red, blue, green"
               className="w-full border p-3 rounded"
@@ -144,9 +195,7 @@ export default function AddProduct() {
           </div>
 
           <div>
-            <label className="block font-semibold mb-1">
-              Size :
-            </label>
+            <label className="block font-semibold mb-1">Size :</label>
             <input
               placeholder="e.g. S, M, L, XL"
               className="w-full border p-3 rounded"
@@ -156,9 +205,7 @@ export default function AddProduct() {
           </div>
 
           <div>
-            <label className="block font-semibold mb-1">
-              Dimension :
-            </label>
+            <label className="block font-semibold mb-1">Dimension :</label>
             <input
               placeholder="e.g. 10, 20, 30"
               className="w-full border p-3 rounded"
@@ -168,11 +215,38 @@ export default function AddProduct() {
           </div>
 
           <div>
-            <label className="block font-semibold mb-1">Description :</label>
+            <label className="block font-semibold mb-1">
+              Description :
+              <div className="inline-flex items-center gap-2 ml-2">
+                <button
+                  type="button"
+                  onClick={() => (listening ? stopVoice() : startVoice())}
+                  className={`px-3 py-1 rounded text-white text-sm transition ${listening
+                      ? "bg-red-500 hover:bg-red-600 animate-pulse"
+                      : "bg-green-500 hover:bg-green-600"
+                    }`}
+                >
+                  {listening ? " Stop" : " Voice"}
+                </button>
+                <button
+                  type="button"
+                  onClick={resetTranscript}
+                  className="px-3 py-1 bg-gray-400 text-white rounded text-sm hover:bg-gray-500 transition"
+                >
+                  Reset
+                </button>
+              </div>
+            </label>
+
             <JoditEditor
               ref={editor}
               value={form.des}
-              onChange={(newContent) => setForm({ ...form, des: newContent })}
+              onChange={(newContent) =>
+                setForm((prev) => ({
+                  ...prev,
+                  des: newContent,
+                }))
+              }
             />
           </div>
 

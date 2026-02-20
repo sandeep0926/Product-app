@@ -13,7 +13,7 @@ export const CreFun = async (req, res) => {
       image: images,
       color: req.body.color,
       dimension: req.body.dimension,
-      size: req.body.size ,
+      size: req.body.size,
     };
 
     const pro = await Products.create(proData);
@@ -60,11 +60,31 @@ export const GetDetFun = async (req, res) => {
 
 export const UpdFun = async (req, res) => {
   try {
-    const Updated = await Products.findByIdAndUpdate(req.params.id, req.body, {
+    const updateData = {
+      title: req.body.title,
+      des: req.body.des,
+      price: req.body.price,
+      color: req.body.color,
+      dimension: req.body.dimension,
+      size: req.body.size,
+    };
+
+    // If new images are uploaded, use them; otherwise keep existing
+    if (req.files && req.files.length > 0) {
+      updateData.image = req.files.map((file) => `/uploads/${file.filename}`);
+    }
+
+    const Updated = await Products.findByIdAndUpdate(req.params.id, updateData, {
       new: true,
     });
+
+    if (!Updated) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
     res.status(200).json(Updated);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "ERROR IN UPDATE PRODUCT" });
   }
 };

@@ -1,4 +1,5 @@
 import AddPro from "./Pages/AddPro.jsx";
+import EditPro from "./Pages/EditPro.jsx";
 import Admin from "./Pages/Adminpage.jsx";
 import Login from "./Pages/Login.jsx";
 import ProductDetail from "./Pages/ProductDetails.jsx";
@@ -62,6 +63,14 @@ export default function App() {
         element={
           <AdminRoute>
             <AddPro />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/edit-pro/:id"
+        element={
+          <AdminRoute>
+            <EditPro />
           </AdminRoute>
         }
       />

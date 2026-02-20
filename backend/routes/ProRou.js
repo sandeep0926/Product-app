@@ -10,5 +10,5 @@ Prorouter.get('/get-prod', GetFun);
 Prorouter.get('/get/:id', GetDetFun);
 
 Prorouter.post('/cre', Autherize, isAdmin, upload.array('images', 5), CreFun);
-Prorouter.put('/upd/:id', Autherize, isAdmin, UpdFun);
+Prorouter.put('/upd/:id', Autherize, isAdmin, upload.array('images', 5), UpdFun);
 Prorouter.delete('/del/:id', Autherize, isAdmin, DelFun);
