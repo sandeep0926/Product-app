@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 export default function ProductPage({ filters: exFil }) {
   const [products, setProducts] = useState([]);
   const [view, setView] = useState("grid");
-  const [color,setColor]=useState("#000000");
 
   const [filters, setFilters] = useState({
     colors: [],
@@ -56,6 +55,21 @@ export default function ProductPage({ filters: exFil }) {
     navigate("/login");
   };
 
+  const availableColors = useMemo(() => {
+    const allColors = products.flatMap((p) => p.color || []);
+    return [...new Set(allColors)].filter(Boolean);
+  }, [products]);
+
+  const availableSizes = useMemo(() => {
+    const allSizes = products.flatMap((p) => p.size || []);
+    return [...new Set(allSizes)].filter(Boolean);
+  }, [products]);
+
+  const availableDimensions = useMemo(() => {
+    const allDims = products.flatMap((p) => p.dimension || []);
+    return [...new Set(allDims)].filter(Boolean);
+  }, [products]);
+
   const filProd = useMemo(() => {
     return products.filter((product) => {
       const colMatch =
@@ -64,7 +78,6 @@ export default function ProductPage({ filters: exFil }) {
           product.color?.includes(c)
         );
 
-      
       const sizeMatch =
         filters.sizes.length === 0 ||
         filters.sizes.some((s) => product.size?.includes(s));
@@ -78,13 +91,18 @@ export default function ProductPage({ filters: exFil }) {
   }, [products, filters]);
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <SidebarFilter onFilterChange={handleFilterChange} />
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50">
+      <SidebarFilter
+        onFilterChange={handleFilterChange}
+        availableColors={availableColors}
+        availableSizes={availableSizes}
+        availableDimensions={availableDimensions}
+      />
 
-      <div className="flex-1">
+      <div className="flex-1 w-full">
         <div className="bg-white border-b shadow-sm">
-          <div className="w-full px-8">
-            <div className="flex items-center justify-between py-4">
+          <div className="w-full px-4 sm:px-6 md:px-8">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between py-4">
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">
                   Products
@@ -94,10 +112,10 @@ export default function ProductPage({ filters: exFil }) {
                 </p>
               </div>
 
-              <div className="flex items-center gap-4">
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4">
                 <span className="text-sm text-gray-600">
-                  Welcome, {userName} 
-                  
+                  Welcome, {userName}
+
                 </span>
 
                 {userRole === "admin" && (
@@ -120,13 +138,13 @@ export default function ProductPage({ filters: exFil }) {
           </div>
         </div>
 
-        <div className="w-full px-8 py-8">
-          <div className="flex gap-2 mb-6">
+        <div className="w-full px-4 sm:px-6 md:px-8 py-6 md:py-8">
+          <div className="flex flex-wrap gap-2 mb-6">
             <button
               onClick={() => setView("grid")}
               className={`px-4 py-2 rounded-lg font-medium transition ${view === "grid"
-                  ? "bg-orange-400 text-white shadow-md"
-                  : "bg-white text-gray-700 border hover:bg-gray-100"
+                ? "bg-orange-400 text-white shadow-md"
+                : "bg-white text-gray-700 border hover:bg-gray-100"
                 }`}
             >
               Grid View
@@ -135,8 +153,8 @@ export default function ProductPage({ filters: exFil }) {
             <button
               onClick={() => setView("list")}
               className={`px-4 py-2 rounded-lg font-medium transition ${view === "list"
-                  ? "bg-orange-400 text-white shadow-md"
-                  : "bg-white text-gray-700 border hover:bg-gray-100"
+                ? "bg-orange-400 text-white shadow-md"
+                : "bg-white text-gray-700 border hover:bg-gray-100"
                 }`}
             >
               List View

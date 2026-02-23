@@ -50,8 +50,8 @@ export default function AdminPanel() {
   const userName = localStorage.getItem("userName") || "Admin";
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <div className="w-64 bg-white border-r p-6 flex flex-col">
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-100">
+      <div className="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r p-6 flex flex-col">
         <h2 className="text-xl font-bold text-orange-400 mb-2">Admin Panel</h2>
         <p className="text-sm text-gray-500 mb-6">Welcome, {userName}</p>
 
@@ -79,13 +79,14 @@ export default function AdminPanel() {
         </button>
       </div>
 
-      <div className="flex-1 p-8">
+      <div className="flex-1 w-full p-4 md:p-8">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold">All Products ({products.length})</h1>
         </div>
 
         <div className="bg-white border-white rounded-lg shadow overflow-hidden">
-          <table className="w-full border-grey-100">
+          <div className="w-full overflow-x-auto">
+          <table className="w-full min-w-[700px] border-grey-100">
             <thead className="bg-gray-50 border-gray-200 border-b">
               <tr>
                 <th className="p-3 text-left">Image</th>
@@ -150,6 +151,7 @@ export default function AdminPanel() {
               ))}
             </tbody>
           </table>
+          </div>
 
           {products.length === 0 && (
             <div className="py-12 text-center text-gray-400">

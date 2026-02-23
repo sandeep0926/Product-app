@@ -147,8 +147,8 @@ export default function EditProduct() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 p-8">
-            <div className="bg-white max-w-3xl mx-auto p-6 rounded-xl shadow">
+        <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+            <div className="bg-white max-w-3xl mx-auto p-4 sm:p-6 rounded-xl shadow">
                 <div className="flex items-center justify-between mb-6">
                     <h1 className="text-2xl font-bold">Edit Product</h1>
                     <button

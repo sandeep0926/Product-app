@@ -69,7 +69,6 @@ export const UpdFun = async (req, res) => {
       size: req.body.size,
     };
 
-    // If new images are uploaded, use them; otherwise keep existing
     if (req.files && req.files.length > 0) {
       updateData.image = req.files.map((file) => `/uploads/${file.filename}`);
     }

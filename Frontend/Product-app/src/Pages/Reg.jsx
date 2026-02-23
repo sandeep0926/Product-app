@@ -62,10 +62,10 @@ export default function Reg() {
   return (
     <div>
       <div
-        className="bg-cover bg-white w-full flex items-center justify-center h-[100vh]"
+        className="bg-cover bg-white w-full flex items-center justify-center h-[100vh] px-4"
         style={{ backgroundImage: `url(${assets})` }}
       >
-        <div className="w-[450px] border rounded-2xl bg-white border-white  shadow-2xl flex-col items-center  flex justify-center space-x-2  text-black px-10 py-9 ">
+        <div className="w-full max-w-[450px] border rounded-2xl bg-white border-white  shadow-2xl flex-col items-center  flex justify-center space-x-2  text-black px-6 md:px-10 py-8 md:py-9 ">
           <h1 className="text-black mb-10 py-4 font-bold text-orange-400 items-center text-center text-4xl border-b-2 ">
             SIGNUP
           </h1>
@@ -124,7 +124,7 @@ export default function Reg() {
             </div>
             <div>
               <button
-                className="text-white  text-2xl bg-orange-400 h-12 rounded-2xl w-80"
+                className="text-white  text-2xl bg-orange-400 h-12 rounded-2xl w-full"
                 type="submit"
               >
                 Register

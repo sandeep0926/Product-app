@@ -23,7 +23,7 @@ export default function Login() {
     }
     if(!login.password)
     {
-      newErr.password="Pawword is Required";
+      newErr.password="Password is Required";
     }
     else if(login.password.length <6)
     {
@@ -69,10 +69,10 @@ if(Object.keys(valErr))
   return (
     <div>
       <div
-        className="bg-cover w-full flex items-center justify-center h-[100vh]"
+        className="bg-cover w-full flex items-center justify-center h-[100vh] px-4"
         style={{ backgroundImage: `url(${assets})` }}
       >
-        <div className="w-[450px] border rounded-2xl border-white  bg-white shadow-2xl flex-col items-center  flex justify-center space-x-2  text-black px-10 py-9">
+        <div className="w-full max-w-[450px] border rounded-2xl border-white  bg-white shadow-2xl flex-col items-center  flex justify-center space-x-2  text-black px-6 md:px-10 py-8 md:py-9">
           <h1 className="text-black mb-10 py-4 font-bold text-orange-400 text-4xl items-center text-center  border-b-2 ">
             LOGIN
           </h1>
@@ -113,7 +113,7 @@ if(Object.keys(valErr))
               </div>
             </div>
             <div>
-              <button className="text-white bg-orange-400 w-full h-12 w-[300px] rounded-2xl text-2xl " type="submit">
+              <button className="text-white bg-orange-400 w-full h-12 rounded-2xl text-2xl " type="submit">
                 LOGIN
               </button>
             </div>

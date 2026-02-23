@@ -12,10 +12,10 @@ export default function ProductCard({ product, list }) {
   return (
     <div
       onClick={() => navigate(`/productdetail/${product._id}`)}
-      className={`bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer border border-gray-100 ${list ? "flex flex-row items-center" : "flex flex-col"
+      className={`bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer border border-gray-100 ${list ? "flex flex-col sm:flex-row items-center sm:items-stretch" : "flex flex-col"
         }`}
     >
-      <div className={`${list ? "w-48 h-48 shrink-0" : "w-full h-64"}`}>
+      <div className={`${list ? "w-full h-56 sm:w-48 sm:h-48 shrink-0" : "w-full h-64"}`}>
         {displayImage ? (
           <img
             src={displayImage}

@@ -57,7 +57,7 @@ export default function ProductDetails() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 px-6 py-8">
+    <div className="min-h-screen bg-gray-50 px-4 py-6 md:px-6 md:py-8">
       <button
         onClick={() => navigate(-1)}
         className="mb-6 px-4 py-2 bg-orange-400 text-white rounded-lg"
@@ -65,15 +65,15 @@ export default function ProductDetails() {
         ← Back
       </button>
 
-      <div className="bg-white rounded-xl shadow-md p-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="bg-white rounded-xl shadow-md p-5 sm:p-6 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
         <div>
-          <div className="w-full h-[450px] rounded-lg overflow-hidden border">
+          <div className="w-full h-64 sm:h-80 md:h-[450px] rounded-lg overflow-hidden border">
             {actImg ? (
-              <img
-                src={actImg}
-                alt={product.title}
-                className="w-full h-full "
-              />
+                <img
+                  src={actImg}
+                  alt={product.title}
+                  className="w-full h-full object-contain md:object-cover"
+                />
             ) : (
               <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-xl">
                 No Image Available
@@ -138,7 +138,7 @@ export default function ProductDetails() {
 
             {product.size?.length > 0 && (
               <p className="mb-2">
-                <span className="font-semibold">Size:</span>{" "}
+                <span className="font-semibold">Size:</span>
                 {product.size.join(", ")}
               </p>
             )}
