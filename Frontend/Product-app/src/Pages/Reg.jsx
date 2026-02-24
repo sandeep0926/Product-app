@@ -72,15 +72,14 @@ export default function Reg() {
           <form onSubmit={HandleSubmit}>
             <div className="flex flex-col w-full  item-center ">
               <div className="mb-9  flex flex-col">
-                <label className=" text-gray-800 font-stretch-200% py-3 w-35 font-bold">
-                  {" "}
+                <label className=" text-gray-800 font-stretch-200% py-3 w-65 font-bold">              
                   Name :
                 </label>
                 <input
                   onChange={(e) => {
                     setRegister({ ...Register, name: e.target.value });
                   }}
-                  className="border w-full  rounded h-13 p-2 w-70"
+                  className="border w-full rounded h-13 p-2 w-70"
                   type="text"
                   autoFocus
                   value={Register.name}
