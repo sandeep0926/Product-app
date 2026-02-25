@@ -21,7 +21,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api", Authrouter);
 app.use("/api1", Prorouter);
-
+/////////
 ConnectDB();
 
 app.listen(process.env.PORT, () => {
