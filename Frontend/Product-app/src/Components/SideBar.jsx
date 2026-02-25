@@ -74,7 +74,7 @@ export default function SidebarFilter({
 
       <div className="px-6 pt-6 pb-4 border-b border-gray-100">
         <div className="flex items-center justify-between">
-          <h3 className="text-xl font-extrabold text-gray-900 tracking-tight">
+          <h3 className="text-xl font-extrabold text-orange-500 tracking-tight">
             Filters
           </h3>
           {activeCount > 0 && (

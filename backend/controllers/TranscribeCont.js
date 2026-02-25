@@ -54,7 +54,7 @@ export const TranscribeFun = async (req, res) => {
         }
 
         const result = await response.json();
-        console.log(`✅ Transcription success: "${(result.text || "").substring(0, 80)}..."`);
+        console.log(` Transcription success: "${(result.text || "").substring(0, 80)}..."`);
 
         res.status(200).json({
             text: result.text || "",
