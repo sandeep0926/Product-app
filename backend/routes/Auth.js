@@ -8,3 +8,6 @@ export const Authrouter=express.Router();
 Authrouter.post('/login',LogVal,Login);
 Authrouter.post('/reg',RegVali,Reg);
 
+Authrouter.get("/",(req,res)=>{
+    res.send("Hello This Worked...")
+})

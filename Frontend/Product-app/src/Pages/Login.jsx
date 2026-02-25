@@ -11,54 +11,51 @@ export default function Login() {
     email: "",
     password: "",
   });
-  const [err,setErr]=useState({});
+  const [err, setErr] = useState({});
 
   const navigate = useNavigate();
 
-  const Validate=()=>{
-    let newErr={};
-    if(!login.email)
-    {
-      newErr.email="Email is Required";
+  const Validate = () => {
+    let newErr = {};
+    if (!login.email) {
+      newErr.email = "Email is Required";
     }
-    if(!login.password)
-    {
-      newErr.password="Password is Required";
-    }
-    else if(login.password.length <6)
-    {
-newErr.password="Passwoed max be 6 length";
+    if (!login.password) {
+      newErr.password = "Password is Required";
+    } else if (login.password.length < 6) {
+      newErr.password = "Passwoed max be 6 length";
     }
     return newErr;
-  }
+  };
 
   const HandleSubmit = async (e) => {
     e.preventDefault();
-const valErr=Validate();
-setErr(valErr);
-if(Object.keys(valErr))
-{
- try {
-      const res = await API.post("api/login", login);
+    const valErr = Validate();
+    setErr(valErr);
 
-      localStorage.setItem("token", res.data.JwtTok);
-      localStorage.setItem("userName", res.data.name);
-      localStorage.setItem("userEmail", res.data.email);
-      localStorage.setItem("userRole", res.data.role);
+    if (Object.keys(valErr).length === 0) {
+      try {
+        const res = await API.post("/api/login", login);
 
-      if (res.status === 201) {
-        HandleSuccess("Login Successfully !");
+        localStorage.setItem("token", res.data.JwtTok);
+        localStorage.setItem("userName", res.data.name);
+        localStorage.setItem("userEmail", res.data.email);
+        localStorage.setItem("userRole", res.data.role);
 
-        if (res.data.role === "admin") {
-          setTimeout(() => navigate("/admin"), 2000);
-        } else {
-          setTimeout(() => navigate("/productpage"), 2000);
+        if (res.status === 201) {
+          HandleSuccess("Login Successfully !");
+
+          if (res.data.role === "admin") {
+            setTimeout(() => navigate("/admin"), 2000);
+          } else {
+            setTimeout(() => navigate("/productpage"), 2000);
+          }
         }
+      } catch (error) {
+        const msg = error?.response?.data?.message || "Login Failed";
+        HandleError(msg);
       }
-    } catch (error) {
-      HandleError("Login Failed");
     }
-}
     // const { email, password } = login;
     // if (!email || !password) {
     //   return HandleError("All Filed is Required ");
